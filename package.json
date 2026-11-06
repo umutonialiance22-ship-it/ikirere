@@ -1,13 +1,17 @@
 {
   "name": "ikirere",
   "version": "1.0.0",
-  "description": "...",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "A Node.js CLI weather fetcher (geocoding + forecast via Open-Meteo)",
+  "type": "module",
+  "bin": {
+    "ikirere": "./src/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["cli", "weather", "open-meteo"],
+  "license": "MIT"
 }
