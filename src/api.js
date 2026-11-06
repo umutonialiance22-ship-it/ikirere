@@ -2,7 +2,7 @@ import { CliError } from './errors.js';
 
 const GEO_URL = 'https://geocoding-api.open-meteo.com/v1/search';
 const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
-const TIMEOUT_MS = 5000;
+const TIMEOUT_MS = Number(process.env.IKIRERE_TIMEOUT_MS) || 5000;
 
 // Shared helper: fetch JSON with a timeout and friendly errors.
 async function fetchJson(url) {

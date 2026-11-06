@@ -83,9 +83,13 @@ function requireCity(words, hint) {
 
 // Does the chained request: geocode -> forecast
 async function lookup(city, units, days) {
-  const place = await geocode(city);
-  const forecast = await getForecast(place.latitude, place.longitude, units, days);
-  return { place, forecast };
+  await geocode(city); // only to check the city is real
+if (addFavourite(data, city)) {
+  await saveData(data);
+  console.log(`Added ${city} to favourites.`);
+} else {
+  console.log(`${city} is already in your favourites.`);
+}
 }
 
 async function main() {
