@@ -28,6 +28,7 @@ Options:
 Environment variables:
   IKIRERE_UNITS     metric | imperial
   IKIRERE_DATA_DIR  folder for data.json (default ~/.ikirere)
+  IKIRERE_TIMEOUT_MS  request timeout in ms (default 10000)
 
 Units priority: --units flag > IKIRERE_UNITS > saved setting > metric`;
 
@@ -83,13 +84,9 @@ function requireCity(words, hint) {
 
 // Does the chained request: geocode -> forecast
 async function lookup(city, units, days) {
-  await geocode(city); // only to check the city is real
-if (addFavourite(data, city)) {
-  await saveData(data);
-  console.log(`Added ${city} to favourites.`);
-} else {
-  console.log(`${city} is already in your favourites.`);
-}
+  const place = await geocode(city);
+  const forecast = await getForecast(place.latitude, place.longitude, units, days);
+  return { place, forecast };
 }
 
 async function main() {
@@ -123,12 +120,12 @@ async function main() {
         else data.favourites.forEach((f, i) => console.log(`${i + 1}. ${f}`));
       } else if (action === 'add') {
         const city = requireCity(words, 'Example: ikirere fav add Kigali');
-        const place = await geocode(city); // make sure the city is real
-        if (addFavourite(data, place.name)) {
+        await geocode(city); // only to check the city is real
+        if (addFavourite(data, city)) {
           await saveData(data);
-          console.log(`Added ${place.name} to favourites.`);
+          console.log(`Added ${city} to favourites.`);
         } else {
-          console.log(`${place.name} is already in your favourites.`);
+          console.log(`${city} is already in your favourites.`);
         }
       } else if (action === 'remove') {
         const city = requireCity(words, 'Example: ikirere fav remove Kigali');
